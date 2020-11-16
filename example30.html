@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PayPal example</title>
+
+<style>
+	body { font-family : sans-serif; }
+        #paypal-button-container { width: 10em; margin-top: 2ex; }
+</style>
+
+</head>
+<body>
+
+	<div class='intro'>
+	<h1>PayPal example 3</h1>
+
+        <p>My <a href='./example10.html'>first example</a>--called "10" like BASIC lines were numbered--has all of the setup details.</p>
+        
+        <p>Now the goal is to get server-side control.  That is, to verify a purchase from my server directly to PayPal.  Otherwise put, one should never 
+            believe anything that comes from the browser / client.  At least, not in this context.
+             </p>
+             
+             <p>When you look at the JavaScript (control-U / view source) of the previous examples (and probably this one eventually), under "onApprove" is the .then(function(details...  "Details" is apt in that a lot 
+                 of detail comes back, but all I need is to send details.id to the server for validation.
+                 </p>
+                 
+                 <p>To use the server REST API, you'll need the client id and "secret."  The client id is public and, in this case, visible in the JavaScript.  
+                 The secret is in the aforementioned (see example 1) dashboard / app entry.  The secret is just below the corresponding client id.</p>
+                 
+                 <p>Make the first <a href='https://developer.paypal.com/docs/api/get-an-access-token-curl/'>"Get an Access Token" call</a>.  That results in 
+                     JSON that includes "access_token":"A21AAL... [80 characters, I think]"  
+                     
+                 </p>
+                 
+                 <p>Then, using the details.id, make a call like the following, based on the <a href='https://developer.paypal.com/docs/api/orders/v2/#orders_get'>orders</a> 
+                     doc.  "8DC73665752701203" is the order id from details.id in the JavaScript.
+                 </p>
+                 
+                 <pre>
+curl -v -X GET "https://api-m.sandbox.paypal.com/v2/checkout/orders/8DC73665752701203" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer A21AAL"
+                 </pre>
+                 
+                 <p>That gives you JSON that will confirm (or deny) the order's completion, amount, shipping address, etc.
+                     
+                 </p>
+                 
+                 <p>I'm removing the PayPal button / JavaScript for now because it doesn't add anything to the previous example.  I'll put it back when I write the 
+                 server code to do something.</p>
+	</div>
+
+</body>
+</html>
+
