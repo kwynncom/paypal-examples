@@ -13,8 +13,11 @@
 <body>
 
 	<div class='intro'>
-	<h1>PayPal example</h1>
+	<h1>PayPal example 1</h1>
 
+        
+        <p><a href='./example20.html'>example 2 is now working</a>.  This example has all the setup.  That example makes a few changes.</p>
+        
 	<h2>setting up</h2>
 
 	<p>I have worked a little bit with PayPal before, but I figured it was time to create a "hello world," from-scratch example.</p>
@@ -46,17 +49,18 @@ Put next month as the expiration date, not this month; that seems to help.  "123
 
 	<h3>further notes on sandbox payments</h3>
 
-	<p>You're probably better off using real addresses and such.  The sandbox payment system is cranky, and I suspect it's because it is weeding out some results as fake.  It works 
-	well enough for an example, though.  
+        <p>For testing purposes, it's a lot easier to use a sandbox user to fake pay.  Note that you cannot use the same sandbox user as the seller, because that would 
+            be the seller selling to himself.  Without a sandbox account, you're probably better off using real addresses and such.  The sandbox payment system is cranky when used without an account, and I suspect it's because it is weeding out some results as fake.  
+            It works well enough for an example, though.  
 
 	</p>
-	</div>
 	
 	<h2>seeing the payment at the developer end</h2>
 
 	<p>When you created the app, you set it to a particular "Sandbox account" email / login id, such as a "...-facilitor" address.  You can change / set the password of that account on the left side under "SANDBOX / Accounts."  Then you go to <a href='https://sandbox.paypal.com/'>sandbox.paypal.com</a>, log in as that user, and you can see the transaction. 
 I think I saw a 7 minute delay between transaction and seeing it in the account.  Note that PayPal charges $0.01 for a $0.01 purchase, so your account will show $0.
 	</p>
+        </div>
 
 	<script src="https://www.paypal.com/sdk/js?client-id=AeIzMoxmCyjQkAp-KjWi3PlRC16q17wekFImr0sjds7Voe2acLyk5wNdHmate9LI0xIxIEPp8tMyg8VH">/* sandbox client ID */</script>
 

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PayPal example</title>
+
+<style>
+	body { font-family : sans-serif; }
+        #paypal-button-container { width: 10em; margin-top: 2ex; }
+</style>
+
+</head>
+<body>
+
+	<div class='intro'>
+	<h1>PayPal example 2</h1>
+
+        <p>My <a href='./example10.html'>first example</a>--called "10" like BASIC lines were numbered--has all of the setup details.</p>
+        
+        <p>My first goal for this example was to first to have only the one "PayPal" button.  
+            <a href='https://developer.paypal.com/docs/business/checkout/configure-payments/standalone-buttons/#render-a-set-of-buttons'>This doc page
+            </a> showed the relevant example.</p>
+            
+        <p>My second goal was to resize, which took both standard CSS and 
+            <a href='https://developer.paypal.com/docs/checkout/integration-features/customize-button/#'>customized PayPal stuff, as documented here</a>.</p>
+        
+        
+        <p>Goal 3: change the price.  The result is in this source code.  That simply took grinding away.
+            
+        </p>
+	</div>
+    
+    
+	<script src="https://www.paypal.com/sdk/js?client-id=AeIzMoxmCyjQkAp-KjWi3PlRC16q17wekFImr0sjds7Voe2acLyk5wNdHmate9LI0xIxIEPp8tMyg8VH">/* sandbox client ID */</script>
+
+    <div id="paypal-button-container"></div>
+
+    <script>
+    [paypal.FUNDING.PAYPAL].forEach(function(fundingSource) {
+        const button = paypal.Buttons({ 
+            fundingSource: fundingSource,  
+            style: { height: 55 }, 
+            createOrder: function(data, actions) {
+              return actions.order.create({
+                purchase_units: [{"amount" : {"currency_code" : "USD", "value" : 1103 }}]
+              });
+            },
+           onApprove: function(data, actions) {
+             return actions.order.capture().then(function(details) {
+             alert('Transaction completed by ' + details.payer.name.given_name);
+            });
+            }
+        });
+        if (button.isEligible()) { button.render('#paypal-button-container'); }
+    });
+    </script>
+</body>
+</html>
+
