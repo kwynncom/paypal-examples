@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PayPal example</title>
+
+<style>
+	body { font-family : sans-serif; }
+</style>
+
+</head>
+<body>
+
+	<div class='intro'>
+	<h1>PayPal example</h1>
+
+	<h2>setting up</h2>
+
+	<p>I have worked a little bit with PayPal before, but I figured it was time to create a "hello world," from-scratch example.</p>
+
+	<p>Below is the really, really simple PayPal example.  Here are the steps / instructions and clarification of points that were not obvious:</p>
+
+	<p>I started from <a href='https://developer.paypal.com/docs/business/checkout/set-up-standard-payments/#1-add-payment-buttons'>this example</a>.  I modified the HTML code just a 
+bit; those mods are part of this page.  Use Control-U in most browsers to see the HTML source code / view source.
+	</p>
+
+	<p>To get the client ID, you need to log in with your PayPal developer account which may be your "real" account.  It is very likely not a sandbox / "fake" user account.  You can log into your "Dashboard" / account from the above example link, or <a href='https://developer.paypal.com/home/'>developer home</a>. 
+</p>
+	<p>It seems the following page is the default once you log in, but, if not it's the <a href='https://developer.paypal.com/developer/applications'>"applications" page</a>, or "My apps & credentials."  Then you "Create app."  It doesn't matter what you call it.
+</p>
+	<p>At some point during that process, you get "SANDBOX API CREDENTIALS" / "Sandbox account: [by default] realAddress-'facilitator'@gmail.com."   That's not literally what you see.  Below that is the "Client ID" which is 80 characters of uppercase letters, lowercase letters, numbers, and hyphens.  It is not a secret, so you can see mine in the source code.
+	</p>
+
+	<p>If you don't have a valid client ID, your test page will return an HTTP 400 error.  	</p>
+
+
+	<h2>making a fake / sandbox payment</h2>
+
+	<p>To test the example, you can use Amex sandbox card 378282246310005 <a href='https://developer.paypal.com/docs/payflow/payflow-pro/payflow-pro-testing/#credit-card-numbers-for-testing'>as documented here</a>.  I have found the Amex card more reliable than the others.  Once you have that card number ready, you'll hit the first button that simply says "PayPal."  The others may work, but I haven't tried them.  Once you hit the button and get the payment screen, don't log in unless you have a sandbox account.  Use the "Pay with Debit or Credit Card" option at the bottom.   
+</p>
+
+	<p>Now that I've played with sandbox purchases more, I'm not sure the card number is at issue.  It seems that the sandbox does some degree of validation just like the real system does.
+Put next month as the expiration date, not this month; that seems to help.  "1234" (without quotes) will work as the CSC number.  "Bob Smith" works as a name.  "123 somewhere st" works.  I *think* the system needs a real city-state-zip, though.  "(555) 555-0100" works as phone.  bob@example.com works as email.  Then you can "Pay Now" at the bottom.  Processing time takes a weirdly long time--something like 10 seconds.  A correct result is that this test page re-focuses and a popup appears that says, "Transaction completed by Bob."
+</p>
+	</div>
+	
+	<h2>seeing the payment at the developer end</h2>
+
+	<p>When you created the app, you set it to a particular "Sandbox account" email / login id, such as a "...-facilitor" address.  You can change / set the password of that account on the left side under "SANDBOX / Accounts."  Then you go to <a href='https://sandbox.paypal.com/'>sandbox.paypal.com</a>, log in as that user, and you can see the transaction. 
+I think I saw a 7 minute delay between transaction and seeing it in the account.  Note that PayPal charges $0.01 for a $0.01 purchase, so your account will show $0.
+	</p>
+
+	<script src="https://www.paypal.com/sdk/js?client-id=AeIzMoxmCyjQkAp-KjWi3PlRC16q17wekFImr0sjds7Voe2acLyk5wNdHmate9LI0xIxIEPp8tMyg8VH">/* sandbox client ID */</script>
+
+    <div id="paypal-button-container"></div>
+
+    <!-- Add the checkout buttons, set up the order and approve the order -->
+    <script>
+      paypal.Buttons({
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: '0.01'
+              }
+            }]
+          });
+        },
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(details) {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+          });
+        }
+      }).render('#paypal-button-container'); // Display payment options on your web page
+    </script>
+</body>
+</html>
+
