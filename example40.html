@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PayPal example</title>
+
+<style>
+    body { font-family : sans-serif; }
+    #paypal-button-container { width: 10em; margin-top: 2ex; }
+    .pricep { font-size: 150%; }
+    .pricel { padding-right: 0.5ex; }
+    #price  { width: 5em; font-size: 130%; }
+    .ckbtn  { font-size: 130%; }
+    .ckbtnp { padding-left: 1ex; }
+    
+</style>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AeIzMoxmCyjQkAp-KjWi3PlRC16q17wekFImr0sjds7Voe2acLyk5wNdHmate9LI0xIxIEPp8tMyg8VH">/* sandbox client ID */</script>
+
+<script>
+
+function byid(id) { return document.getElementById(id); }
+
+function activatePPBtn() {
+    [paypal.FUNDING.PAYPAL].forEach(function(fundingSource) {
+        const button = paypal.Buttons({ 
+            fundingSource: fundingSource,  
+            style: { height: 55 }, 
+            createOrder: function(data, actions) {
+              return actions.order.create({
+                purchase_units: [{"amount" : {"currency_code" : "USD", "value" : byid('price').value }}]
+              });
+            },
+           onApprove: function(data, actions) {
+             return actions.order.capture().then(function(details) {
+             alert('Transaction completed by ' + details.payer.name.given_name);
+            });
+            }
+        });
+        if (button.isEligible()) { button.render('#paypal-button-container'); }
+    });
+}
+
+</script>
+
+</head>
+<body>
+
+<div class='intro'>
+    <h1>PayPal example 4</h1>
+    <p>My <a href='./example10.html'>first example</a>--called "10" like BASIC lines were numbered--has all of the setup details.</p>
+    <p>The goal in this example is a variable price.  In this case, it's a user-entered price, but now that I have the variable working, the price can be 
+        varied in a number of ways.  Enter a price, hit "Checkout," and the PayPal button appears.  When you go to PayPay sandbox and log in or "pay with ... card," 
+        the price you entered should appear.    
+    </p>
+    
+    <p>This brings up the question of what happens if the user changes the price.  I am pretty darn sure that deleting the contents of the PayPal container div 
+        and then re-running the render will work.  Other additions are to disable / readonly the price button, hide "checkout," give an instruction to hit the 
+        PayPal button, etc.  Perhaps I'll do all that in future examples.
+    </p>
+    
+</div>
+    
+    <div>
+        <div class='pricep'><label class='pricel'>Price:</label><input type='number' id='price' />
+            <span class='ckbtnp'><button class='ckbtn' onclick='activatePPBtn();'>Checkout</button></span>
+        </div>
+    </div>
+
+<div id="paypal-button-container"></div>
+
+
+</body>
+</html>
+
