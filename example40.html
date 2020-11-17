@@ -23,6 +23,9 @@
 function byid(id) { return document.getElementById(id); }
 
 function activatePPBtn() {
+    
+    byid('paypal-button-container').innerHTML = '';
+    
     [paypal.FUNDING.PAYPAL].forEach(function(fundingSource) {
         const button = paypal.Buttons({ 
             fundingSource: fundingSource,  
@@ -58,6 +61,11 @@ function activatePPBtn() {
     <p>This brings up the question of what happens if the user changes the price.  I am pretty darn sure that deleting the contents of the PayPal container div 
         and then re-running the render will work.  Other additions are to disable / readonly the price button, hide "checkout," give an instruction to hit the 
         PayPal button, etc.  Perhaps I'll do all that in future examples.
+    </p>
+    
+    <p>If the user changed the price and hit checkout, a second PayPal button would appear. So, yes, clearing the div and hitting "checkout" will now 
+        result in one button with the latest price.  I am leaving the previous paragraph because there are still more potential to-dos.  
+        
     </p>
     
 </div>
